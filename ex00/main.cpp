@@ -12,6 +12,5 @@ int	main(int ac, char **av)
 	std::string	input(av[1]);
 	btc.read_data();
 	btc.read_input(input);
-	btc.search_in_data();
 	return (0);
 }

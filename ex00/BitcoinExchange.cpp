@@ -16,7 +16,6 @@ BitcoinExchange	&BitcoinExchange::operator=(BitcoinExchange const &btc)
 	if (this != &btc)
 	{
 		_data_map = btc.get_data_map();
-		_input_map = btc.get_input_map();
 	}
 	return (*this);
 }
@@ -26,10 +25,7 @@ std::map<std::string, std::string>	BitcoinExchange::get_data_map() const
 	return (_data_map);
 }
 
-std::map<std::string, std::string>	BitcoinExchange::get_input_map() const
-{
-	return (_input_map);
-}
+
 
 bool	BitcoinExchange::read_input(std::string &input)
 {
@@ -49,16 +45,16 @@ bool	BitcoinExchange::read_input(std::string &input)
 		pos = line.find('|');
 		if (line != "date | value" && pos != std::string::npos)
 		{
-			date = line.substr(0, pos);
+			date = line.substr(0, pos - 1);
 			value = line.substr(pos + 1);
-			_input_map.insert(std::make_pair(date, value));
+
 			std::cout << date << "=>" << value << std::endl;
+			std::cout << search_key_in_data(date) << "=>" << search_value_in_data(date) << std::endl << std::endl;
 		}
 		else if (line != "date | value" && pos == std::string::npos)
 		{
 			date = line;
-			_input_map.insert(std::make_pair(date, "Error: bad input"));
-			std::cout << date << "=>" << "value" << std::endl;
+			std::cout << date << " =>" << " PARSE ERROR" << std::endl << std::endl;
 
 		}
 	}
@@ -89,14 +85,24 @@ void	BitcoinExchange::read_data()
 }
 
 //ajouter les exception nb negaifs/overflow/erreurs de parsing style lettre/plusieurs points/mauvaises dates/etc
-void	BitcoinExchange::search_in_data()
+std::string	BitcoinExchange::search_value_in_data(std::string key)
 {
-	// std::map<std::string, std::string>	save_data(_data_map);
-	std::map<std::string, std::string>	save_input = _input_map;
-	size_t	i = 0;
-
-	for(std::map<std::string, std::string>::iterator it = save_input.begin(); it != save_input.end(); ++it)
+	std::map<std::string, std::string>::iterator it = _data_map.find(key);
+	if(it == _data_map.end())
 	{
-		std::cout << it->first << "=> " << save_input[it->first] << " " << i++ << std::endl;
+		it = _data_map.lower_bound(key);
 	}
+	std::cout << it->second << std::endl;
+	return (it->second);
+}
+
+std::string	BitcoinExchange::search_key_in_data(std::string key)
+{
+	std::map<std::string, std::string>::iterator it = _data_map.find(key);
+	if(it == _data_map.end())
+	{
+		it = _data_map.lower_bound(key);
+	}
+	std::cout << it->first << std::endl;
+	return (it->first);
 }

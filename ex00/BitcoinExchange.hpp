@@ -15,15 +15,13 @@ class BitcoinExchange
 		BitcoinExchange(BitcoinExchange const &btc);
 		BitcoinExchange	&operator=(BitcoinExchange const &btc);
 		std::map<std::string, std::string>get_data_map() const;
-		std::map<std::string, std::string>get_input_map() const;
 		void	read_data();
 		bool	read_input(std::string &input);
-		void	search_in_data();
+		std::string	search_value_in_data(std::string key);
+		std::string	search_key_in_data(std::string key);
 
 	private:
-	//changer map par multimap
 		std::map<std::string, std::string>	_data_map;
-		std::map<std::string, std::string>	_input_map;
 };
 
 #endif
