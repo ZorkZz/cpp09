@@ -1,11 +1,12 @@
 #ifndef BITCOINEXCHANGE_HPP
 #define BITCOINEXCHANGE_HPP
 
-#include <map>
-#include <string>
 #include <iostream>
+#include <string>
+#include <cstdlib>
+#include <sstream>
+#include <map>
 #include <fstream>
-#include <ctime>
 
 class BitcoinExchange
 {
@@ -14,14 +15,17 @@ class BitcoinExchange
 		~BitcoinExchange();
 		BitcoinExchange(BitcoinExchange const &btc);
 		BitcoinExchange	&operator=(BitcoinExchange const &btc);
-		std::map<std::string, std::string>get_data_map() const;
+		std::map<std::string, double>get_data_map() const;
+		bool	check_number(const std::string &value);
+		bool	check_date(const std::string &date);
 		void	read_data();
-		bool	read_input(std::string &input);
-		std::string	search_value_in_data(std::string key);
-		std::string	search_key_in_data(std::string key);
+		bool	read_input(const std::string &input);
+		double	search_value_in_data(const std::string &key);
+		std::string	search_key_in_data(const std::string &key);
+		std::string	move_day(const std::string &date);
 
 	private:
-		std::map<std::string, std::string>	_data_map;
+		std::map<std::string, double>	_data_map;
 };
 
 #endif
