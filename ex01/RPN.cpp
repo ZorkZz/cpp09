@@ -21,6 +21,8 @@ RPN &RPN::operator=(const RPN &rpn)
 
 bool	RPN::set_list(const std::string &param)
 {
+	size_t	j = 0;
+
 	for (size_t i = 0; i < param.length(); i++)
 	{
 		if ((param[i] < '0' || param[i] > '9') && (param[i] != ' ' && param[i] != '+' && param[i] != '-' && param[i] != '*' && param[i] != '/'))
@@ -29,9 +31,19 @@ bool	RPN::set_list(const std::string &param)
 	for (size_t i = 0; i < param.length(); i++)
 	{
 		if (param[i] >= '0' && param[i] <= '9')
+		{
+			if (j % 2 == 0 && j != 0)
+					return (false);
 			_numbers.push_back(std::atoi(&param[i]));
+			j++;
+		}
 		else if (param[i] == '+' || param[i] == '-' || param[i] == '*' || param[i] == '/')
+		{
+			if (j % 2 != 0 || j == 0)
+				return (false);
 			_operators.push_back(param[i]);
+			j++;
+		}
 	}
 	return (true);
 }
