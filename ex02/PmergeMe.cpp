@@ -1,5 +1,8 @@
 #include "PmergeMe.hpp"
 
+#include <array>
+#include <array>
+
 Time::Time()
 {}
 
@@ -85,12 +88,38 @@ std::deque<int>	add_elements_deque(int const ac, char const **av)
 	return (deque);
 }
 
+void	VectorSort(std::vector<int> Vector)
+{
+	std::array<int, std::pair<int, int>> PairArray[Vector.size() / 2];
+	std::vector<int>::iterator it = Vector.begin();
+	std::vector<int>::iterator save;
+	size_t	i = 0;
+	size_t	j = 0;
+
+	while (!Vector.empty())
+	{
+		// MyPairs[i][j++];
+		if (j == 2)
+		{
+			j = 0;
+			i++;
+		}
+		save = it;
+		it++;
+		Vector.erase(save);
+	}
+
+}
+
 void	LaunchSorting(int const ac, char const **av)
 {
 	std::vector<int>	vector;
 	std::deque<int>		deque;
-	// Time				MyTime;
+	Time				MyTime;
 
 	vector = add_elements_vector(ac, av);
 	deque = add_elements_deque(ac, av);
+	
+	MyTime.start_clock();
+	VectorSort(vector);
 }

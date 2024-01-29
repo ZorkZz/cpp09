@@ -8,6 +8,8 @@
 #include <vector>
 #include <ctime>
 #include <deque>
+#include <array>
+#include <utility>
 
 class Time
 {
@@ -27,6 +29,8 @@ class Time
 		clock_t	_deque;
 };
 
+void	VectorSort(std::vector<int> Vector);
+void	DequeSort(std::deque<int> Deque);
 void	LaunchSorting(int const ac, char const **av);
 bool	CheckNumbers(int const ac, char const **av);
 
