@@ -8,7 +8,6 @@
 #include <vector>
 #include <ctime>
 #include <deque>
-#include <array>
 #include <utility>
 
 class Time

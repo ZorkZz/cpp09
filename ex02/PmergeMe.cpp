@@ -90,20 +90,20 @@ std::deque<int>	add_elements_deque(int const ac, char const **av)
 
 void	VectorSort(std::vector<int> Vector)
 {
-	std::array<int, std::pair<int, int>> PairArray[Vector.size() / 2];
+	std::vector<std::pair<int, int>> PairArray;
 	std::vector<int>::iterator it = Vector.begin();
 	std::vector<int>::iterator save;
 	size_t	i = 0;
-	size_t	j = 0;
+	int		nb0;
+	int		nb1;
 
 	while (!Vector.empty())
 	{
-		// MyPairs[i][j++];
-		if (j == 2)
+		if (i % 2 != 0)
 		{
-			j = 0;
-			i++;
+			nb1 = it;
 		}
+		i++;
 		save = it;
 		it++;
 		Vector.erase(save);
