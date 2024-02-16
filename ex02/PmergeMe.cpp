@@ -1,7 +1,5 @@
 #include "PmergeMe.hpp"
 
-#include <array>
-#include <array>
 
 Time::Time()
 {}
@@ -70,7 +68,7 @@ std::vector<int>	add_elements_vector(int const ac, char const **av)
 {
 	std::vector<int>	vector;
 
-	for (int i = 2; i < ac; i++)
+	for (int i = 1; i < ac; i++)
 	{
 		vector.push_back(std::atoi(av[i]));
 	}
@@ -90,25 +88,47 @@ std::deque<int>	add_elements_deque(int const ac, char const **av)
 
 void	VectorSort(std::vector<int> Vector)
 {
-	std::vector<std::pair<int, int>> PairArray;
-	std::vector<int>::iterator it = Vector.begin();
-	std::vector<int>::iterator save;
+	VectorPair PairVector;
 	size_t	i = 0;
 	int		nb0;
 	int		nb1;
 
-	while (!Vector.empty())
+	for (std::vector<int>::iterator it = Vector.begin(); it != Vector.end(); it++)
 	{
-		if (i % 2 != 0)
+		if (Vector.size() == i + 1)
 		{
-			nb1 = it;
+			nb0 = -1;
+			nb1 = *it;
 		}
+		else if (i % 2 != 0)
+			nb1 = *it;
+		else
+			nb0 = *it;
 		i++;
-		save = it;
-		it++;
-		Vector.erase(save);
+		if (i % 2 == 0 || i == Vector.size())
+			PairVector.push_back(std::pair<int, int>(nb0, nb1));
 	}
-
+	Vector.clear();
+	for (VectorPair::iterator it = PairVector.begin(); it != PairVector.end(); it++)
+		std::cout << it->first << " " << it->second << std::endl;
+	for(VectorPair::iterator it = PairVector.begin(); it != PairVector.end(); it++)
+	{
+		if (it->first > it->second)
+		{
+			std::pair<int, int> MyPair;
+			int	save;
+			MyPair = *it;
+			save = MyPair.first;
+			MyPair.first = MyPair.second;
+			MyPair.second = save;
+			PairVector.erase(it);
+			PairVector.push_back(MyPair);
+			it = PairVector.begin();
+		}
+	}
+	std::sort(PairVector.begin(), PairVector.end(), ComparePairsBySecond());
+	for (VectorPair::iterator it = PairVector.begin(); it != PairVector.end(); it++)
+		std::cout << it->first << " " << it->second << std::endl;
 }
 
 void	LaunchSorting(int const ac, char const **av)
@@ -120,6 +140,7 @@ void	LaunchSorting(int const ac, char const **av)
 	vector = add_elements_vector(ac, av);
 	deque = add_elements_deque(ac, av);
 	
+	VectorSort(vector);
 	MyTime.start_clock();
 	VectorSort(vector);
 }

@@ -9,6 +9,16 @@
 #include <ctime>
 #include <deque>
 #include <utility>
+#include <algorithm>
+
+
+typedef	std::vector<std::pair<int, int> > VectorPair;
+
+struct ComparePairsBySecond {
+    bool operator()(const std::pair<int, int>& a, const std::pair<int, int>& b) {
+        return a.second < b.second;
+    }
+};
 
 class Time
 {
