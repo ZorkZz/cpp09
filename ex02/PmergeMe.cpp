@@ -79,14 +79,75 @@ std::deque<int>	add_elements_deque(int const ac, char const **av)
 {
 	std::deque<int>	deque;
 
-	for (int i = 2; i < ac; i++)
+	for (int i = 1; i < ac; i++)
 	{
 		deque.push_back(std::atoi(av[i]));
 	}
 	return (deque);
 }
 
-void	VectorSort(std::vector<int> Vector)
+std::deque<int> DequeSort(std::deque<int> Deque)
+{
+	DequePair PairDeque;
+	size_t	i = 0;
+	int		nb0;
+	int		nb1;
+
+	for (std::deque<int>::iterator it = Deque.begin(); it != Deque.end(); it++)
+	{
+		if (Deque.size() == i + 1 && i % 2 == 0)
+		{
+			nb0 = -1;
+			nb1 = *it;
+		}
+		else if (i % 2 != 0)
+			nb1 = *it;
+		else
+			nb0 = *it;
+		i++;
+		if (i % 2 == 0 || i == Deque.size())
+			PairDeque.push_back(std::pair<int, int>(nb0, nb1));
+	}
+	Deque.clear();
+	for(DequePair::iterator it = PairDeque.begin(); it != PairDeque.end(); it++)
+	{
+		if (it->first > it->second)
+		{
+			std::pair<int, int> MyPair;
+			int	save;
+			MyPair = *it;
+			save = MyPair.first;
+			MyPair.first = MyPair.second;
+			MyPair.second = save;
+			PairDeque.erase(it);
+			PairDeque.push_back(MyPair);
+			it = PairDeque.begin();
+		}
+	}
+	std::sort(PairDeque.begin(), PairDeque.end(), ComparePairsBySecond());
+	for (DequePair::iterator it = PairDeque.begin(); it != PairDeque.end(); it++)
+	{
+		if (it->first != -1)
+			Deque.push_back(it->second);
+	}
+	for (DequePair::iterator it = PairDeque.begin(); it != PairDeque.end(); it++)
+	{
+		if (it->first != -1)
+		{
+			std::deque<int>::iterator Dit = std::lower_bound(Deque.begin(), Deque.end(), it->first);
+			Deque.insert(Dit, it->first);
+		}
+		else
+		{
+			std::deque<int>::iterator Dit = std::lower_bound(Deque.begin(), Deque.end(), it->second);
+			Deque.insert(Dit, it->second);
+		}
+	}
+	return (Deque);
+}
+
+
+std::vector<int>	VectorSort(std::vector<int> Vector)
 {
 	VectorPair PairVector;
 	size_t	i = 0;
@@ -95,7 +156,7 @@ void	VectorSort(std::vector<int> Vector)
 
 	for (std::vector<int>::iterator it = Vector.begin(); it != Vector.end(); it++)
 	{
-		if (Vector.size() == i + 1)
+		if (Vector.size() == i + 1 && i % 2 == 0)
 		{
 			nb0 = -1;
 			nb1 = *it;
@@ -109,8 +170,6 @@ void	VectorSort(std::vector<int> Vector)
 			PairVector.push_back(std::pair<int, int>(nb0, nb1));
 	}
 	Vector.clear();
-	for (VectorPair::iterator it = PairVector.begin(); it != PairVector.end(); it++)
-		std::cout << it->first << " " << it->second << std::endl;
 	for(VectorPair::iterator it = PairVector.begin(); it != PairVector.end(); it++)
 	{
 		if (it->first > it->second)
@@ -128,19 +187,60 @@ void	VectorSort(std::vector<int> Vector)
 	}
 	std::sort(PairVector.begin(), PairVector.end(), ComparePairsBySecond());
 	for (VectorPair::iterator it = PairVector.begin(); it != PairVector.end(); it++)
-		std::cout << it->first << " " << it->second << std::endl;
+	{
+		if (it->first != -1)
+			Vector.push_back(it->second);
+	}
+	for (VectorPair::iterator it = PairVector.begin(); it != PairVector.end(); it++)
+	{
+		if (it->first != -1)
+		{
+			std::vector<int>::iterator Vit = std::lower_bound(Vector.begin(), Vector.end(), it->first);
+			Vector.insert(Vit, it->first);
+		}
+		else
+		{
+			std::vector<int>::iterator Vit = std::lower_bound(Vector.begin(), Vector.end(), it->second);
+			Vector.insert(Vit, it->second);
+		}
+	}
+	return (Vector);
 }
 
 void	LaunchSorting(int const ac, char const **av)
 {
 	std::vector<int>	vector;
 	std::deque<int>		deque;
+	double				VectorTime;
+	double				DequeTime;
 	Time				MyTime;
 
 	vector = add_elements_vector(ac, av);
 	deque = add_elements_deque(ac, av);
-	
-	VectorSort(vector);
+
+	std::cout << "Before: ";
+	for (std::vector<int>::iterator it = vector.begin(); it != vector.end(); it++)
+	{
+		std::cout << *it << " ";
+	}
+	std::cout << std::endl;
+
+	MyTime.vector_clock();
+	vector = VectorSort(vector);
 	MyTime.start_clock();
-	VectorSort(vector);
+	VectorTime = (MyTime.get_start() - MyTime.get_vector());
+
+	MyTime.deque_clock();
+	deque = DequeSort(deque);
+	MyTime.start_clock();
+	DequeTime = (MyTime.get_start() - MyTime.get_deque());
+
+	std::cout << "After: ";
+	for (std::deque<int>::iterator it = deque.begin(); it != deque.end(); it++)
+	{
+		std::cout << *it << " ";
+	}
+	std::cout << std::endl;
+	std::cout << "time to process a range of " << ac - 1 << " elements  witch std::vector<int> " << VectorTime << " us" << std::endl;
+	std::cout << "time to process a range of " << ac - 1 << " elements  witch std::deque<int> " << DequeTime << " us" << std::endl;
 }

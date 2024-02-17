@@ -13,6 +13,7 @@
 
 
 typedef	std::vector<std::pair<int, int> > VectorPair;
+typedef	std::deque<std::pair<int, int> > DequePair;
 
 struct ComparePairsBySecond {
     bool operator()(const std::pair<int, int>& a, const std::pair<int, int>& b) {
@@ -38,8 +39,8 @@ class Time
 		clock_t	_deque;
 };
 
-void	VectorSort(std::vector<int> Vector);
-void	DequeSort(std::deque<int> Deque);
+std::vector<int>	VectorSort(std::vector<int> Vector);
+std::deque<int>	DequeSort(std::deque<int> Deque);
 void	LaunchSorting(int const ac, char const **av);
 bool	CheckNumbers(int const ac, char const **av);
 
