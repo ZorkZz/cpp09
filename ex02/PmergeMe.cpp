@@ -39,7 +39,7 @@ clock_t Time::get_deque() const
 
 bool	CheckNumbers(int const ac, char const **av)
 {
-	for (int i = 2; i < ac; i++)
+	for (int i = 1; i < ac; i++)
 	{
 		for (int j = 0; av[i][j]; j++)
 		{
