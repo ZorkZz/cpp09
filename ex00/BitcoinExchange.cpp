@@ -48,9 +48,9 @@ bool	BitcoinExchange::read_input(const std::string &input)
 			value = line.substr(pos + 1);
 			if (check_number(value) == true && check_date(date) == true && std::strtof(value.c_str(), NULL) > 0)
 			{
-				number_of_bitcoin = std::strtod(value.c_str(), NULL) * search_value_in_data(date);
-				if (number_of_bitcoin < 2147483648 )
-					std::cout << date << " => " << value << " = " << number_of_bitcoin << std::endl;
+				number_of_bitcoin = std::strtod(value.c_str(), NULL);
+				if (number_of_bitcoin <= 1000 )
+					std::cout << date << " => " << value << " = " << number_of_bitcoin * search_value_in_data(date) << std::endl;
 				else
 					std::cout << "Error: too large a number." << std::endl;
 			}
@@ -185,6 +185,9 @@ std::string	BitcoinExchange::move_day(const std::string &date)
 	}
 	if (prev_year == 2009 && prev_month == 1 && prev_day == 1)
 		return ("2009-01-01");
+	else if ((prev_year >= 2022 && prev_month >= 03 && prev_day >= 29) || \
+			(prev_year >= 2022 && prev_month > 04) || (prev_year >= 2023))
+		return ("2022-03-29");
 	prev_date << prev_year << "-";
 	if (prev_month < 10)
 		prev_date << "0";
