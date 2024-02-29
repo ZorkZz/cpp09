@@ -32,14 +32,12 @@ bool	RPN::set_list(const std::string &param)
 	{
 		if (param[i] >= '0' && param[i] <= '9')
 		{
-			if (j % 2 == 0 && j != 0)
-					return (false);
 			_numbers.push_back(std::atoi(&param[i]));
 			j++;
 		}
 		else if (param[i] == '+' || param[i] == '-' || param[i] == '*' || param[i] == '/')
 		{
-			if (j % 2 != 0 || j == 0)
+			if (j == 0 || j == 1)
 				return (false);
 			_operators.push_back(param[i]);
 			j++;
@@ -76,6 +74,8 @@ void RPN::operate()
 				_numbers.push_front(nb0 - nb1);
 				break;
 			case '/':
+				if (nb1 == 0)
+					throw (std::exception());
 				_numbers.push_front(nb0 / nb1);
 				break;
 			case '*':

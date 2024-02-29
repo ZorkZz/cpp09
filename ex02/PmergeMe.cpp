@@ -185,7 +185,7 @@ std::vector<int>	VectorSort(std::vector<int> Vector)
 			it = PairVector.begin();
 		}
 	}
-	std::sort(PairVector.begin(), PairVector.end(), ComparePairsBySecond());
+	PairVector = Recursiv(PairVector);
 	for (VectorPair::iterator it = PairVector.begin(); it != PairVector.end(); it++)
 	{
 		if (it->first != -1)
@@ -206,6 +206,57 @@ std::vector<int>	VectorSort(std::vector<int> Vector)
 	}
 	return (Vector);
 }
+
+template <typename T>
+void MergeSort(T &arr, T &temp, int left, int right)
+{
+	if (left < right) {
+		int mid = left + (right - left) / 2;
+		MergeSort(arr, temp, left, mid);
+		MergeSort(arr, temp, mid + 1, right);
+		Merge(arr, temp, left, mid, right);
+	}
+}
+
+template <typename T>
+void Merge(T& arr, T& temp, int left, int mid, int right)
+{
+	int i = left;
+	int j = mid + 1;
+	int k = left;
+
+	while (i <= mid && j <= right) {
+		if (arr[i].second <= arr[j].second) {
+			temp[k++] = arr[i++];
+		} else {
+			temp[k++] = arr[j++];
+		}
+	}
+
+	while (i <= mid) {
+		temp[k++] = arr[i++];
+	}
+
+	while (j <= right) {
+		temp[k++] = arr[j++];
+	}
+
+	for (int l = left; l <= right; ++l) {
+		arr[l] = temp[l];
+	}
+}
+
+template <typename T>
+T	Recursiv(T Content)
+{
+	if (Content.size() <= 1)
+		return Content;
+
+	T temp(Content.size());
+	MergeSort(Content, temp, 0, Content.size() - 1);
+	return (Content);
+}
+
 
 void	LaunchSorting(int const ac, char const **av)
 {

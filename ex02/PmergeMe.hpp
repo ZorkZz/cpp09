@@ -39,6 +39,15 @@ class Time
 		clock_t	_deque;
 };
 
+template <typename T>
+void MergeSort(T &arr, T &temp, int left, int right);
+
+template <typename T>
+void Merge(T& arr, T& temp, int left, int mid, int right);
+
+template <typename T>
+T	Recursiv(T Content);
+
 std::vector<int>	VectorSort(std::vector<int> Vector);
 std::deque<int>	DequeSort(std::deque<int> Deque);
 void	LaunchSorting(int const ac, char const **av);
