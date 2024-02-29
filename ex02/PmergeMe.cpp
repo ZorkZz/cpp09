@@ -124,7 +124,7 @@ std::deque<int> DequeSort(std::deque<int> Deque)
 			it = PairDeque.begin();
 		}
 	}
-	std::sort(PairDeque.begin(), PairDeque.end(), ComparePairsBySecond());
+	PairDeque = Recursiv(PairDeque);
 	for (DequePair::iterator it = PairDeque.begin(); it != PairDeque.end(); it++)
 	{
 		if (it->first != -1)
