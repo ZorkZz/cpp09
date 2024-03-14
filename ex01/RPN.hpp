@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <list>
+#include <stack>
 #include <exception>
 
 class RPN
@@ -15,15 +16,12 @@ class RPN
 		~RPN();
 		RPN(const RPN &rpn);
 		RPN	&operator=(const RPN &rpn);
-		std::list<int>	get_numbers() const;
-		std::list<char>	get_operators() const;
-		void	operate();
+		std::stack<int>	get_numbers() const;
 		bool	set_list(const std::string &param);
-		bool	verif_input();
+		void	operate(const std::string &param);
 
 	private:
-		std::list<int>	_numbers;
-		std::list<char>	_operators;
+		std::stack<int>		_toOperate;
 };
 
 #endif

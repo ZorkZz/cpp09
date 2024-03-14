@@ -7,6 +7,7 @@
 #include <sstream>
 #include <map>
 #include <fstream>
+#include <exception>
 
 class BitcoinExchange
 {

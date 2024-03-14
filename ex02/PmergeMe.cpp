@@ -134,7 +134,8 @@ std::deque<int> DequeSort(std::deque<int> Deque)
 	{
 		if (it->first != -1)
 		{
-			std::deque<int>::iterator Dit = std::lower_bound(Deque.begin(), Deque.end(), it->first);
+			std::deque<int>::iterator Dend = std::find(Deque.begin(), Deque.end(), it->second);
+			std::deque<int>::iterator Dit = std::lower_bound(Deque.begin(), Dend, it->first);
 			Deque.insert(Dit, it->first);
 		}
 		else
@@ -145,7 +146,6 @@ std::deque<int> DequeSort(std::deque<int> Deque)
 	}
 	return (Deque);
 }
-
 
 std::vector<int>	VectorSort(std::vector<int> Vector)
 {
@@ -195,7 +195,8 @@ std::vector<int>	VectorSort(std::vector<int> Vector)
 	{
 		if (it->first != -1)
 		{
-			std::vector<int>::iterator Vit = std::lower_bound(Vector.begin(), Vector.end(), it->first);
+			std::vector<int>::iterator Vend = std::find(Vector.begin(), Vector.end(), it->second);
+			std::vector<int>::iterator Vit = std::lower_bound(Vector.begin(), Vend, it->first);
 			Vector.insert(Vit, it->first);
 		}
 		else

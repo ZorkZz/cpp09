@@ -16,20 +16,18 @@ int	main(int ac, char **av)
 		std::cerr << "Error" << std::endl;
 		return (1);
 	}
-	if (rpn.verif_input() == false)
-	{
-		std::cerr << "Error" << std::endl;
-		return (1);
-	}
 	try
 	{
-		rpn.operate();
+		rpn.operate(param);
 	}
 	catch (const std::exception &e)
 	{
 		std::cerr << "Error" << std::endl;
 		return (1);
 	}
-	std::cout << rpn.get_numbers().front() << std::endl;
+	if (rpn.get_numbers().size() == 1)
+		std::cout << rpn.get_numbers().top() << std::endl;
+	else
+		std::cout << "Error" << std::endl;
 	return (0);
 }

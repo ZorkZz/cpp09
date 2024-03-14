@@ -1,4 +1,4 @@
-NAME = PMERGEME
+NAME = PmergeMe
 
 SRC = main.cpp PmergeMe.cpp
 

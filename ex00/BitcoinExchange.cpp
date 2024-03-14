@@ -108,7 +108,10 @@ void	BitcoinExchange::read_data()
 	std::size_t		pos;
 
 	if (!DataFile.is_open())
+	{
 		std::cout << "fail to open" << std::endl;
+		throw (std::exception());
+	}
 	while (std::getline(DataFile, line, '\n'))
 	{
 		pos = line.find(',');

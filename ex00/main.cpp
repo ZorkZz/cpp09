@@ -10,7 +10,15 @@ int	main(int ac, char **av)
 		return (1);
 	}
 	std::string	input(av[1]);
-	btc.read_data();
-	btc.read_input(input);
+	try
+	{
+		btc.read_data();
+		btc.read_input(input);
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << "ERROR" << std::endl;
+	}
+	
 	return (0);
 }
