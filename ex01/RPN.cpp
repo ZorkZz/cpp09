@@ -27,7 +27,7 @@ bool	RPN::set_list(const std::string &param)
 	{
 		if ((param[i] >= '0' && param[i] <= '9') || param[i] == '+' || param[i] == '-' || param[i] == '*' || param[i] == '/')
 		{
-			if (atoi(&param[i]) < 0 || atoi(&param[i]) > 9)
+			if (std::atoi(&param[i]) < 0 || std::atoi(&param[i]) > 9)
 				return (false);
 		}
 	}
