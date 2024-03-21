@@ -9,14 +9,15 @@
 #include <ctime>
 #include <deque>
 #include <utility>
+#include <cmath>
 #include <algorithm>
 
 
-typedef	std::vector<std::pair<int, int> > VectorPair;
-typedef	std::deque<std::pair<int, int> > DequePair;
+typedef	std::vector<std::pair<unsigned int, unsigned int> > VectorPair;
+typedef	std::deque<std::pair<unsigned int, unsigned int> > DequePair;
 
 struct ComparePairsBySecond {
-    bool operator()(const std::pair<int, int>& a, const std::pair<int, int>& b) {
+    bool operator()(const std::pair<unsigned int, unsigned int>& a, const std::pair<unsigned int, unsigned int>& b) {
         return a.second < b.second;
     }
 };
@@ -48,8 +49,8 @@ void Merge(T& arr, T& temp, int left, int mid, int right);
 template <typename T>
 T	Recursiv(T Content);
 
-std::vector<int>	VectorSort(std::vector<int> Vector);
-std::deque<int>	DequeSort(std::deque<int> Deque);
+std::vector<unsigned int>	VectorSort(std::vector<unsigned int> Vector);
+std::deque<unsigned int>	DequeSort(std::deque<unsigned int> Deque);
 void	LaunchSorting(int const ac, char const **av);
 bool	CheckNumbers(int const ac, char const **av);
 

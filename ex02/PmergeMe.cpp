@@ -64,9 +64,9 @@ bool	CheckNumbers(int const ac, char const **av)
 	return (true);
 }
 
-std::vector<int>	add_elements_vector(int const ac, char const **av)
+std::vector<unsigned int>	add_elements_vector(int const ac, char const **av)
 {
-	std::vector<int>	vector;
+	std::vector<unsigned int>	vector;
 
 	for (int i = 1; i < ac; i++)
 	{
@@ -75,9 +75,9 @@ std::vector<int>	add_elements_vector(int const ac, char const **av)
 	return (vector);
 }
 
-std::deque<int>	add_elements_deque(int const ac, char const **av)
+std::deque<unsigned int>	add_elements_deque(int const ac, char const **av)
 {
-	std::deque<int>	deque;
+	std::deque<unsigned int>	deque;
 
 	for (int i = 1; i < ac; i++)
 	{
@@ -86,18 +86,19 @@ std::deque<int>	add_elements_deque(int const ac, char const **av)
 	return (deque);
 }
 
-std::deque<int> DequeSort(std::deque<int> Deque)
+std::deque<unsigned int> DequeSort(std::deque<unsigned int> Deque)
 {
 	DequePair PairDeque;
 	size_t	i = 0;
-	int		nb0;
-	int		nb1;
+	unsigned int		nb0;
+	unsigned int		nb1;
+	bool	isodd = false;
 
-	for (std::deque<int>::iterator it = Deque.begin(); it != Deque.end(); it++)
+	for (std::deque<unsigned int>::iterator it = Deque.begin(); it != Deque.end(); it++)
 	{
 		if (Deque.size() == i + 1 && i % 2 == 0)
 		{
-			nb0 = -1;
+			isodd = true;
 			nb1 = *it;
 		}
 		else if (i % 2 != 0)
@@ -105,16 +106,16 @@ std::deque<int> DequeSort(std::deque<int> Deque)
 		else
 			nb0 = *it;
 		i++;
-		if (i % 2 == 0 || i == Deque.size())
-			PairDeque.push_back(std::pair<int, int>(nb0, nb1));
+		if ((i % 2 == 0 || i == Deque.size()) || (i % 2 == 0 && Deque.size() != i && isodd == false))
+			PairDeque.push_back(std::pair<unsigned int, unsigned int>(nb0, nb1));
 	}
 	Deque.clear();
 	for(DequePair::iterator it = PairDeque.begin(); it != PairDeque.end(); it++)
 	{
 		if (it->first > it->second)
 		{
-			std::pair<int, int> MyPair;
-			int	save;
+			std::pair<unsigned int, unsigned int> MyPair;
+			unsigned int	save;
 			MyPair = *it;
 			save = MyPair.first;
 			MyPair.first = MyPair.second;
@@ -125,40 +126,64 @@ std::deque<int> DequeSort(std::deque<int> Deque)
 		}
 	}
 	PairDeque = Recursiv(PairDeque);
+	Deque.push_back(PairDeque[0].first);
 	for (DequePair::iterator it = PairDeque.begin(); it != PairDeque.end(); it++)
+		Deque.push_back(it->second);
+	size_t	index = 2;
+	size_t	nb = 2;
+	size_t	temp = index;
+	unsigned int		count = index;
+
+	for (size_t	i = 1; i < PairDeque.size(); i++)
 	{
-		if (it->first != -1)
-			Deque.push_back(it->second);
-	}
-	for (DequePair::iterator it = PairDeque.begin(); it != PairDeque.end(); it++)
-	{
-		if (it->first != -1)
+		std::deque<unsigned int>::iterator it = Deque.begin();
+		if (count == 0)
 		{
-			std::deque<int>::iterator Dend = std::find(Deque.begin(), Deque.end(), it->second);
-			std::deque<int>::iterator Dit = std::lower_bound(Deque.begin(), Dend, it->first);
-			Deque.insert(Dit, it->first);
+			index = pow(2, nb) - index;
+			nb++;
+			count = index;
 		}
 		else
+			count--;
+		if (index > Deque.size())
+			index = Deque.size() - 1;
+		temp = index;
+		while (temp < Deque.size() && temp != 0)
 		{
-			std::deque<int>::iterator Dit = std::lower_bound(Deque.begin(), Deque.end(), it->second);
-			Deque.insert(Dit, it->second);
+			if (PairDeque[i].second <= Deque[temp] && PairDeque[i].second >= Deque[temp - 1])
+			{
+				Deque.insert(it + (temp), PairDeque[i].second);
+				break;
+			}
+			else if (PairDeque[i]. second <= Deque[temp - 1])
+				temp--;
+			else
+				temp++;
+			if (temp == 0)
+				Deque.insert(it, PairDeque[i].second);
 		}
+	}
+	if (isodd == true)
+	{
+		std::deque<unsigned int>::iterator it = std::lower_bound(Deque.begin(), Deque.end(), nb1);
+		Deque.insert(it, nb1);
 	}
 	return (Deque);
 }
 
-std::vector<int>	VectorSort(std::vector<int> Vector)
+std::vector<unsigned int>	VectorSort(std::vector<unsigned int> Vector)
 {
 	VectorPair PairVector;
 	size_t	i = 0;
-	int		nb0;
-	int		nb1;
+	unsigned int		nb0;
+	unsigned int		nb1;
+	bool				isodd = false;
 
-	for (std::vector<int>::iterator it = Vector.begin(); it != Vector.end(); it++)
+	for (std::vector<unsigned int>::iterator it = Vector.begin(); it != Vector.end(); it++)
 	{
 		if (Vector.size() == i + 1 && i % 2 == 0)
 		{
-			nb0 = -1;
+			isodd = true;
 			nb1 = *it;
 		}
 		else if (i % 2 != 0)
@@ -166,16 +191,16 @@ std::vector<int>	VectorSort(std::vector<int> Vector)
 		else
 			nb0 = *it;
 		i++;
-		if (i % 2 == 0 || i == Vector.size())
-			PairVector.push_back(std::pair<int, int>(nb0, nb1));
+		if ((i % 2 == 0 || i == Vector.size()) || ( i % 2 == 0 && Vector.size() != i && isodd == false))
+			PairVector.push_back(std::pair<unsigned int, unsigned int>(nb0, nb1));
 	}
 	Vector.clear();
 	for(VectorPair::iterator it = PairVector.begin(); it != PairVector.end(); it++)
 	{
 		if (it->first > it->second)
 		{
-			std::pair<int, int> MyPair;
-			int	save;
+			std::pair<unsigned int, unsigned int> MyPair;
+			unsigned int	save;
 			MyPair = *it;
 			save = MyPair.first;
 			MyPair.first = MyPair.second;
@@ -186,24 +211,47 @@ std::vector<int>	VectorSort(std::vector<int> Vector)
 		}
 	}
 	PairVector = Recursiv(PairVector);
+	Vector.push_back(PairVector[0].first);
 	for (VectorPair::iterator it = PairVector.begin(); it != PairVector.end(); it++)
+		Vector.push_back(it->second);
+	size_t	index = 2;
+	size_t	nb = 2;
+	size_t	temp = index;
+	unsigned int		count = index;
+
+	for (size_t	i = 1; i < PairVector.size(); i++)
 	{
-		if (it->first != -1)
-			Vector.push_back(it->second);
-	}
-	for (VectorPair::iterator it = PairVector.begin(); it != PairVector.end(); it++)
-	{
-		if (it->first != -1)
+		std::vector<unsigned int>::iterator it = Vector.begin();
+		if (count == 0)
 		{
-			std::vector<int>::iterator Vend = std::find(Vector.begin(), Vector.end(), it->second);
-			std::vector<int>::iterator Vit = std::lower_bound(Vector.begin(), Vend, it->first);
-			Vector.insert(Vit, it->first);
+			index = pow(2, nb) - index;
+			nb++;
+			count = index;
 		}
 		else
+			count--;
+		if (index > Vector.size())
+			index = Vector.size() - 1;
+		temp = index;
+		while (temp < Vector.size() && temp != 0)
 		{
-			std::vector<int>::iterator Vit = std::lower_bound(Vector.begin(), Vector.end(), it->second);
-			Vector.insert(Vit, it->second);
+			if (PairVector[i].second <= Vector[temp] && PairVector[i].second >= Vector[temp - 1])
+			{
+				Vector.insert(it + (temp), PairVector[i].second);
+				break;
+			}
+			else if (PairVector[i]. second <= Vector[temp - 1])
+				temp--;
+			else
+				temp++;
+			if (temp == 0)
+				Vector.insert(it, PairVector[i].second);
 		}
+	}
+	if (isodd == true)
+	{
+		std::vector<unsigned int>::iterator it = std::lower_bound(Vector.begin(), Vector.end(), nb1);
+		Vector.insert(it, nb1);
 	}
 	return (Vector);
 }
@@ -261,8 +309,8 @@ T	Recursiv(T Content)
 
 void	LaunchSorting(int const ac, char const **av)
 {
-	std::vector<int>	vector;
-	std::deque<int>		deque;
+	std::vector<unsigned int>	vector;
+	std::deque<unsigned int>		deque;
 	double				VectorTime;
 	double				DequeTime;
 	Time				MyTime;
@@ -271,7 +319,7 @@ void	LaunchSorting(int const ac, char const **av)
 	deque = add_elements_deque(ac, av);
 
 	std::cout << "Before: ";
-	for (std::vector<int>::iterator it = vector.begin(); it != vector.end(); it++)
+	for (std::vector<unsigned int>::iterator it = vector.begin(); it != vector.end(); it++)
 	{
 		std::cout << *it << " ";
 	}
@@ -288,11 +336,11 @@ void	LaunchSorting(int const ac, char const **av)
 	DequeTime = (MyTime.get_start() - MyTime.get_deque());
 
 	std::cout << "After: ";
-	for (std::deque<int>::iterator it = deque.begin(); it != deque.end(); it++)
+	for (std::deque<unsigned int>::iterator it = deque.begin(); it != deque.end(); it++)
 	{
 		std::cout << *it << " ";
 	}
 	std::cout << std::endl;
-	std::cout << "time to process a range of " << ac - 1 << " elements  witch std::vector<int> " << VectorTime << " us" << std::endl;
-	std::cout << "time to process a range of " << ac - 1 << " elements  witch std::deque<int> " << DequeTime << " us" << std::endl;
+	std::cout << "time to process a range of " << ac - 1 << " elements  witch std::vector<unsigned int> " << VectorTime << " us" << std::endl;
+	std::cout << "time to process a range of " << ac - 1 << " elements  witch std::deque<unsigned int> " << DequeTime << " us" << std::endl;
 }
