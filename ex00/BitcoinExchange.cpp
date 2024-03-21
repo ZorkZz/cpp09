@@ -46,6 +46,8 @@ bool	BitcoinExchange::read_input(const std::string &input)
 		{
 			date = line.substr(0, pos - 1);
 			value = line.substr(pos + 1);
+			if (value.size() > 1 && value[0] == ' ')
+				value = value.substr(1);
 			if (check_number(value) == true && check_date(date) == true && std::strtof(value.c_str(), NULL) > 0)
 			{
 				number_of_bitcoin = std::strtod(value.c_str(), NULL);
@@ -74,6 +76,8 @@ bool	BitcoinExchange::check_number(const std::string &value)
 	try
 	{
 		std::strtof(value.c_str(), NULL);
+		if (value.find_first_not_of("0123456789") != std::string::npos)
+			return (false);
 	}
 	catch(const std::exception& e)
 	{
@@ -149,54 +153,10 @@ std::string	BitcoinExchange::search_key_in_data(const std::string &key)
 
 std::string	BitcoinExchange::move_day(const std::string &date)
 {
-	int					year, month, day, prev_year, prev_month, prev_day;
-	char				sep0, sep1;
-	std::istringstream	date_to_sep(date);
-	std::stringstream	prev_date;
-
-	date_to_sep >> year >> sep0 >> month >> sep1 >> day;
-	prev_day = day - 1;
-	prev_month = month;
-	prev_year = year;
-	if (prev_day == 0)
-	{
-		prev_month--;
-		if (prev_month == 0)
-		{
-			prev_month = 12;
-			prev_year--;
-			if (prev_year < 2009)
-				return ("2009-01-02");
-		}
-		switch (prev_month)
-		{
-			case 2:
-				if (prev_year % 4 == 0 && (prev_year % 100 != 0 || prev_year % 400 == 0))
-					prev_day = 29;
-				else
-					prev_day = 28;
-				break;
-			case 4:
-			case 6:
-			case 9:
-			case 11:
-				prev_day = 30;
-				break;
-			default:
-				prev_day = 31;
-		}
-	}
-	if (prev_year == 2009 && prev_month == 1 && prev_day == 1)
-		return ("2009-01-01");
-	else if ((prev_year >= 2022 && prev_month >= 03 && prev_day >= 29) || \
-			(prev_year >= 2022 && prev_month > 04) || (prev_year >= 2023))
+	std::map<std::string, double>::iterator it = _data_map.lower_bound(date);
+	if (it == _data_map.end())
 		return ("2022-03-29");
-	prev_date << prev_year << "-";
-	if (prev_month < 10)
-		prev_date << "0";
-	prev_date << prev_month << "-";
-	if (prev_day)
-		prev_date << "0";
-	prev_date << prev_day;
-	return (prev_date.str());
+	if (it != _data_map.end() && date.compare(it->first) != 0 && it != _data_map.begin())
+		it--;
+	return (it->first);
 }
