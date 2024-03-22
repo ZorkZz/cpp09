@@ -11,6 +11,7 @@
 #include <utility>
 #include <cmath>
 #include <algorithm>
+#include <iomanip>
 
 
 typedef	std::vector<std::pair<unsigned int, unsigned int> > VectorPair;

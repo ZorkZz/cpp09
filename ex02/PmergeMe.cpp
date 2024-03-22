@@ -327,8 +327,9 @@ void	LaunchSorting(int const ac, char const **av)
 	double				DequeTime;
 	Time				MyTime;
 
+
+	MyTime.start_clock();
 	vector = add_elements_vector(ac, av);
-	deque = add_elements_deque(ac, av);
 
 	std::cout << "Before: ";
 	for (std::vector<unsigned int>::iterator it = vector.begin(); it != vector.end(); it++)
@@ -337,22 +338,23 @@ void	LaunchSorting(int const ac, char const **av)
 	}
 	std::cout << std::endl;
 
-	MyTime.vector_clock();
 	vector = VectorSort(vector);
-	MyTime.start_clock();
-	VectorTime = (MyTime.get_start() - MyTime.get_vector());
+	MyTime.vector_clock();
+	VectorTime = (MyTime.get_vector() - MyTime.get_start());
 
-	MyTime.deque_clock();
+	MyTime.start_clock();
+	deque = add_elements_deque(ac, av);
 	deque = DequeSort(deque);
 	MyTime.start_clock();
-	DequeTime = (MyTime.get_start() - MyTime.get_deque());
 
 	std::cout << "After: ";
 	for (std::deque<unsigned int>::iterator it = deque.begin(); it != deque.end(); it++)
 	{
 		std::cout << *it << " ";
 	}
+	MyTime.deque_clock();
+	DequeTime = (MyTime.get_deque() - MyTime.get_start());
 	std::cout << std::endl;
-	std::cout << "time to process a range of " << ac - 1 << " elements  witch std::vector<unsigned int> " << VectorTime << " us" << std::endl;
+	std::cout << std::fixed <<  std::setprecision(0) << "time to process a range of " << ac - 1 << " elements  witch std::vector<unsigned int> " << VectorTime << " us" << std::endl;
 	std::cout << "time to process a range of " << ac - 1 << " elements  witch std::deque<unsigned int> " << DequeTime << " us" << std::endl;
 }
