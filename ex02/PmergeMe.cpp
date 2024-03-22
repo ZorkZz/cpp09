@@ -106,12 +106,18 @@ std::deque<unsigned int> DequeSort(std::deque<unsigned int> Deque)
 		else
 			nb0 = *it;
 		i++;
-		if ((i % 2 == 0 || i == Deque.size()) || (i % 2 == 0 && Deque.size() != i && isodd == false))
+		if (i % 2 == 0 || (i == Deque.size() && isodd == false))
 			PairDeque.push_back(std::pair<unsigned int, unsigned int>(nb0, nb1));
 	}
 	Deque.clear();
+	bool	ischange = false;
 	for(DequePair::iterator it = PairDeque.begin(); it != PairDeque.end(); it++)
 	{
+		if (ischange == true)
+		{
+			it = PairDeque.begin();
+			ischange = false;
+		}
 		if (it->first > it->second)
 		{
 			std::pair<unsigned int, unsigned int> MyPair;
@@ -122,7 +128,7 @@ std::deque<unsigned int> DequeSort(std::deque<unsigned int> Deque)
 			MyPair.second = save;
 			PairDeque.erase(it);
 			PairDeque.push_back(MyPair);
-			it = PairDeque.begin();
+			ischange = true;
 		}
 	}
 	PairDeque = Recursiv(PairDeque);
@@ -150,17 +156,17 @@ std::deque<unsigned int> DequeSort(std::deque<unsigned int> Deque)
 		temp = index;
 		while (temp < Deque.size() && temp != 0)
 		{
-			if (PairDeque[i].second <= Deque[temp] && PairDeque[i].second >= Deque[temp - 1])
+			if (PairDeque[i].first <= Deque[temp] && PairDeque[i].first >= Deque[temp - 1])
 			{
-				Deque.insert(it + (temp), PairDeque[i].second);
+				Deque.insert(it + (temp), PairDeque[i].first);
 				break;
 			}
-			else if (PairDeque[i]. second <= Deque[temp - 1])
+			else if (PairDeque[i]. first <= Deque[temp - 1])
 				temp--;
 			else
 				temp++;
 			if (temp == 0)
-				Deque.insert(it, PairDeque[i].second);
+				Deque.insert(it, PairDeque[i].first);
 		}
 	}
 	if (isodd == true)
@@ -191,12 +197,18 @@ std::vector<unsigned int>	VectorSort(std::vector<unsigned int> Vector)
 		else
 			nb0 = *it;
 		i++;
-		if ((i % 2 == 0 || i == Vector.size()) || ( i % 2 == 0 && Vector.size() != i && isodd == false))
+		if (i % 2 == 0 || (i == Vector.size() && isodd == false))
 			PairVector.push_back(std::pair<unsigned int, unsigned int>(nb0, nb1));
 	}
 	Vector.clear();
+	bool	ischange = false;
 	for(VectorPair::iterator it = PairVector.begin(); it != PairVector.end(); it++)
 	{
+		if (ischange == true)
+		{
+			it = PairVector.begin();
+			ischange = false;
+		}
 		if (it->first > it->second)
 		{
 			std::pair<unsigned int, unsigned int> MyPair;
@@ -207,7 +219,7 @@ std::vector<unsigned int>	VectorSort(std::vector<unsigned int> Vector)
 			MyPair.second = save;
 			PairVector.erase(it);
 			PairVector.push_back(MyPair);
-			it = PairVector.begin();
+			ischange = true;
 		}
 	}
 	PairVector = Recursiv(PairVector);
@@ -235,17 +247,17 @@ std::vector<unsigned int>	VectorSort(std::vector<unsigned int> Vector)
 		temp = index;
 		while (temp < Vector.size() && temp != 0)
 		{
-			if (PairVector[i].second <= Vector[temp] && PairVector[i].second >= Vector[temp - 1])
+			if (PairVector[i].first <= Vector[temp] && PairVector[i].first >= Vector[temp - 1])
 			{
-				Vector.insert(it + (temp), PairVector[i].second);
+				Vector.insert(it + (temp), PairVector[i].first);
 				break;
 			}
-			else if (PairVector[i]. second <= Vector[temp - 1])
+			else if (PairVector[i].first <= Vector[temp - 1])
 				temp--;
 			else
 				temp++;
 			if (temp == 0)
-				Vector.insert(it, PairVector[i].second);
+				Vector.insert(it, PairVector[i].first);
 		}
 	}
 	if (isodd == true)
